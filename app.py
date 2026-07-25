@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from connectors.crm import read
+from connectors import read
 
 app = FastAPI(title="AgentGuard")
 
