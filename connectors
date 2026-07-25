@@ -1,1 +1,7 @@
-crm.py
+def read():
+
+    return {
+        "customer": "John",
+        "status": "Pending",
+        "invoice": "INV-001"
+    }
