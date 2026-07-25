@@ -1,78 +1,57 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from datetime import datetime
+
+from connectors.crm import read
 
 app = FastAPI(title="AgentGuard")
 
 
-class VerificationRequest(BaseModel):
-    expected_state: dict
+class Claim(BaseModel):
+    claim: str
 
 
 @app.get("/")
 def home():
     return {
         "message": "AgentGuard is running",
-        "version": "0.7"
+        "version": "0.4"
     }
 
 
-# ==========================================
-# Fake CRM (sera remplacé plus tard)
-# ==========================================
+def verify_claim(text: str):
 
-def read_crm():
+    text = text.lower()
 
-    return {
-        "customer": "John",
-        "status": "Pending",
-        "invoice": "INV-001"
-    }
-
-
-# ==========================================
-
-def compare_states(expected: dict, actual: dict):
-
-    mismatches = []
-
-    for key, expected_value in expected.items():
-
-        actual_value = actual.get(key)
-
-        if actual_value != expected_value:
-
-            mismatches.append({
-                "field": key,
-                "expected": expected_value,
-                "actual": actual_value
-            })
-
-    return mismatches
-
-
-@app.post("/verify")
-def verify(data: VerificationRequest):
-
-    actual_state = read_crm()
-
-    mismatches = compare_states(
-        data.expected_state,
-        actual_state
-    )
-
-    if len(mismatches) == 0:
-
+    if "terre est plate" in text:
         return {
-            "verdict": "PASSED",
-            "actual_state": actual_state,
-            "mismatches": [],
-            "generated_at": datetime.utcnow().isoformat()
+            "verdict": "FALSE",
+            "confidence": 0.99,
+            "reason": "Les preuves scientifiques montrent que la Terre est sphérique."
+        }
+
+    if "2+2=4" in text:
+        return {
+            "verdict": "TRUE",
+            "confidence": 1.0,
+            "reason": "Vérité mathématique."
         }
 
     return {
-        "verdict": "FAILED",
-        "actual_state": actual_state,
-        "mismatches": mismatches,
-        "generated_at": datetime.utcnow().isoformat()
+        "verdict": "UNKNOWN",
+        "confidence": 0.0,
+        "reason": "Aucune preuve disponible."
+    }
+
+
+@app.post("/verify")
+def verify(data: Claim):
+
+    crm_data = read()
+
+    result = verify_claim(data.claim)
+
+    return {
+        "claim": data.claim,
+        "crm": crm_data,
+        **result
     }
