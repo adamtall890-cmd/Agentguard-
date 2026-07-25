@@ -15,15 +15,12 @@ def home():
         "version": "0.3"
     }
 
+def verify_claim(text: str):
 
-@app.post("/verify")
-def verify(data: Claim):
-
-    text = data.claim.lower()
+    text = text.lower()
 
     if "terre est plate" in text:
         return {
-            "claim": data.claim,
             "verdict": "FALSE",
             "confidence": 0.99,
             "reason": "Les preuves scientifiques montrent que la Terre est sphérique."
@@ -31,15 +28,22 @@ def verify(data: Claim):
 
     if "2+2=4" in text:
         return {
-            "claim": data.claim,
             "verdict": "TRUE",
             "confidence": 1.0,
             "reason": "Vérité mathématique."
         }
 
     return {
-        "claim": data.claim,
         "verdict": "UNKNOWN",
         "confidence": 0.0,
-        "reason": "Aucune règle disponible."
+        "reason": "Aucune preuve disponible."
+    }
+@app.post("/verify")
+def verify(data: Claim):
+
+    result = verify_claim(data.claim)
+
+    return {
+        "claim": data.claim,
+        **result
     }
