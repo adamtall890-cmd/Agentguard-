@@ -7,16 +7,30 @@ app = FastAPI(title="AgentGuard")
 
 class VerificationRequest(BaseModel):
     expected_state: dict
-    actual_state: dict
 
 
 @app.get("/")
 def home():
     return {
         "message": "AgentGuard is running",
-        "version": "0.6"
+        "version": "0.7"
     }
 
+
+# ==========================================
+# Fake CRM (sera remplacé plus tard)
+# ==========================================
+
+def read_crm():
+
+    return {
+        "customer": "John",
+        "status": "Pending",
+        "invoice": "INV-001"
+    }
+
+
+# ==========================================
 
 def compare_states(expected: dict, actual: dict):
 
@@ -40,25 +54,25 @@ def compare_states(expected: dict, actual: dict):
 @app.post("/verify")
 def verify(data: VerificationRequest):
 
+    actual_state = read_crm()
+
     mismatches = compare_states(
         data.expected_state,
-        data.actual_state
+        actual_state
     )
 
     if len(mismatches) == 0:
 
         return {
             "verdict": "PASSED",
-            "confidence": 1.0,
-            "message": "Expected state matches actual state.",
+            "actual_state": actual_state,
             "mismatches": [],
             "generated_at": datetime.utcnow().isoformat()
         }
 
     return {
         "verdict": "FAILED",
-        "confidence": 1.0,
-        "message": "Differences detected.",
+        "actual_state": actual_state,
         "mismatches": mismatches,
         "generated_at": datetime.utcnow().isoformat()
     }
