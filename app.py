@@ -12,10 +12,45 @@ class Claim(BaseModel):
 def home():
     return {
         "message": "AgentGuard is running",
-        "version": "0.3"
+        "version": "0.4"
     }
 
+
+# -----------------------------
+# AgentGuard Verification Pipeline
+# -----------------------------
+
+def understand_claim(text: str):
+    return text
+
+
+def extract_facts(text: str):
+    return [text]
+
+
+def search_evidence(facts):
+    return []
+
+
+def compare_evidence(evidence):
+    return {}
+
+
+def calculate_confidence(result):
+    return 0.0
+
+
 def verify_claim(text: str):
+
+    claim = understand_claim(text)
+
+    facts = extract_facts(claim)
+
+    evidence = search_evidence(facts)
+
+    comparison = compare_evidence(evidence)
+
+    confidence = calculate_confidence(comparison)
 
     text = text.lower()
 
@@ -35,9 +70,11 @@ def verify_claim(text: str):
 
     return {
         "verdict": "UNKNOWN",
-        "confidence": 0.0,
+        "confidence": confidence,
         "reason": "Aucune preuve disponible."
     }
+
+
 @app.post("/verify")
 def verify(data: Claim):
 
