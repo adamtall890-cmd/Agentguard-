@@ -22,11 +22,16 @@ def home():
 
 @app.post("/verify")
 def verify(data: Claim):
+
     crm_data = crm.read()
+
     web_data = web.search(data.claim)
-return {
-    "claim": claim.text,
-    "crm": crm_result,
-    "web": web_result,
-    **decision
-}
+
+    decision = verify_claim(data.claim, web_data)
+
+    return {
+        "claim": data.claim,
+        "crm": crm_data,
+        "web": web_data,
+        **decision
+    }
