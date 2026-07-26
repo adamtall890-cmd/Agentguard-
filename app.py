@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 from connectors import crm
 from connectors import web
+from engine.verifier import verify_claim
 
 app = FastAPI(title="AgentGuard")
 
