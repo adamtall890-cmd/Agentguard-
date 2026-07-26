@@ -2,4 +2,4 @@ fastapi
 uvicorn
 pydantic
 requests
-duckduckgo-search
+ddgs
