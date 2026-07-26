@@ -1,35 +1,30 @@
 import requests
+from urllib.parse import quote
 
 def search(query: str):
     try:
-        url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + query.replace(" ", "_")
+        url = f"https://en.wikipedia.org/w/api.php?action=opensearch&search={quote(query)}&limit=1&namespace=0&format=json"
 
         r = requests.get(url, timeout=10)
+        data = r.json()
 
-        if r.status_code == 200:
-            data = r.json()
+        results = []
 
-            return {
-                "query": query,
-                "results": [
-                    {
-                        "title": data.get("title"),
-                        "summary": data.get("extract"),
-                        "url": data.get("content_urls", {})
-                                  .get("desktop", {})
-                                  .get("page", "")
-                    }
-                ]
-            }
+        if len(data) >= 4 and len(data[1]) > 0:
+            results.append({
+                "title": data[1][0],
+                "summary": data[2][0],
+                "url": data[3][0]
+            })
 
         return {
             "query": query,
-            "results": []
+            "results": results
         }
 
     except Exception as e:
         return {
             "query": query,
-            "error": str(e),
-            "results": []
+            "results": [],
+            "error": str(e)
         }
