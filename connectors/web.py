@@ -5,8 +5,29 @@ def search(query: str):
     try:
         url = f"https://en.wikipedia.org/w/api.php?action=opensearch&search={quote(query)}&limit=1&namespace=0&format=json"
 
-        r = requests.get(url, timeout=10)
-        data = r.json()
+        r = requests.get(
+            url,
+            headers={
+                "User-Agent": "AgentGuard/1.0"
+            },
+            timeout=10
+        )
+
+        if r.status_code != 200:
+            return {
+                "query": query,
+                "results": [],
+                "error": f"HTTP {r.status_code}"
+            }
+
+        try:
+            data = r.json()
+        except Exception:
+            return {
+                "query": query,
+                "results": [],
+                "error": r.text[:200]
+            }
 
         results = []
 
