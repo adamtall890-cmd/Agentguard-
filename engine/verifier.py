@@ -22,7 +22,7 @@ def verify_claim(claim: str, web_results: dict):
         }
 
     return {
-        "verdict": "UNKNOWN",
+        "verdict": "yes or no",
         "confidence": score,
         "reason": "Les résultats Web ne permettent pas encore de conclure."
     }
