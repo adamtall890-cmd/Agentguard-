@@ -29,7 +29,4 @@ def verify(data: Claim):
         "claim": data.claim,
         "crm": crm_data,
         "web": web_data,
-        "verdict": "UNKNOWN",
-        "confidence": 0,
-        "reason": "Aucune preuve disponible."
-    }
+    decision = verify_claim(claim.text, web_result)
