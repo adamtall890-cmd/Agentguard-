@@ -1,4 +1,4 @@
-def verify_claim(claim: str, web_results: dict):
+from engine.scoring import score_sourcesdef verify_claim(claim: str, web_results: dict):
 
     text = ""
 
