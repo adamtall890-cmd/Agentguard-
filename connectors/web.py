@@ -1,42 +1,16 @@
-import requests
-from urllib.parse import quote
+from duckduckgo_search import DDGS
 
 def search(query: str):
     try:
-        url = f"https://en.wikipedia.org/w/api.php?action=opensearch&search={quote(query)}&limit=1&namespace=0&format=json"
-
-        r = requests.get(
-            url,
-            headers={
-                "User-Agent": "AgentGuard/1.0"
-            },
-            timeout=10
-        )
-
-        if r.status_code != 200:
-            return {
-                "query": query,
-                "results": [],
-                "error": f"HTTP {r.status_code}"
-            }
-
-        try:
-            data = r.json()
-        except Exception:
-            return {
-                "query": query,
-                "results": [],
-                "error": r.text[:200]
-            }
-
         results = []
 
-        if len(data) >= 4 and len(data[1]) > 0:
-            results.append({
-                "title": data[1][0],
-                "summary": data[2][0],
-                "url": data[3][0]
-            })
+        with DDGS() as ddgs:
+            for r in ddgs.text(query, max_results=5):
+                results.append({
+                    "title": r.get("title"),
+                    "url": r.get("href"),
+                    "snippet": r.get("body")
+                })
 
         return {
             "query": query,
