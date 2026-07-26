@@ -1,4 +1,7 @@
-from engine.scoring import score_sourcesdef verify_claim(claim: str, web_results: dict):
+from engine.scoring import score_sources
+
+
+def verify_claim(claim: str, web_results: dict):
 
     text = ""
 
@@ -10,19 +13,25 @@ from engine.scoring import score_sourcesdef verify_claim(claim: str, web_results
 
     text = text.lower()
 
+    score = score_sources(web_results.get("results", []))
+
     claim_lower = claim.lower()
 
-    if "paris" in claim_lower and "capitale" in claim_lower and "france" in claim_lower:
+    if (
+        "paris" in claim_lower
+        and "capitale" in claim_lower
+        and "france" in claim_lower
+    ):
 
         if "paris" in text and "capital" in text:
             return {
                 "verdict": "TRUE",
-                "confidence": 95,
-                "reason": "Plusieurs résultats Web confirment cette affirmation."
+                "confidence": score,
+                "reason": "Plusieurs sources fiables confirment cette affirmation."
             }
 
     return {
         "verdict": "UNKNOWN",
-        "confidence": 25,
-        "reason": "Les résultats ne permettent pas encore de conclure."
+        "confidence": score,
+        "reason": "Les résultats Web ne permettent pas encore de conclure."
     }
