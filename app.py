@@ -24,9 +24,9 @@ def home():
 def verify(data: Claim):
     crm_data = crm.read()
     web_data = web.search(data.claim)
-
-    return {
-        "claim": data.claim,
-        "crm": crm_data,
-        "web": web_data,
-    decision = verify_claim(claim.text, web_result)
+return {
+    "claim": claim.text,
+    "crm": crm_result,
+    "web": web_result,
+    **decision
+}
