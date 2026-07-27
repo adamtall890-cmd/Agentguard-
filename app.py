@@ -16,6 +16,20 @@ def home():
 class OutcomeRequest(BaseModel):
     refund_id: str
 
+
 @app.post("/outcome")
 def outcome(data: OutcomeRequest):
-    return verify_outcome(data.refund_id)
+
+    task = {
+        "action": "CREATE_LEAD",
+        "lead_id": data.refund_id
+    }
+
+    agent_result = run_task(task)
+
+    verification = verify_outcome(data.refund_id)
+
+    return {
+        "agent": agent_result,
+        "verification": verification
+    }
