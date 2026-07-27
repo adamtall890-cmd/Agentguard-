@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+from engine.outcome import verify_outcome
 from connectors import crm
 from connectors import web
 
@@ -23,18 +23,13 @@ def home():
     }
 
 
-@app.post("/verify")
-def verify(data: Claim):
+class OutcomeRequest(BaseModel):
+    refund_id: str
 
-    facts = extract_facts(data.claim)
 
-    crm_data = crm.read()
-
-    web_data = web.search(data.claim)
-
-    evidence = merge_evidence(web_data)
-
-    decision = verify_claim(data.claim, web_data)
+@app.post("/outcome")
+def outcome(data: OutcomeRequest):
+    return verify_outcome(data.refund_id)
 
     return {
         "claim": data.claim,
