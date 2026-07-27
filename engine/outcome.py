@@ -1,19 +1,55 @@
-@app.post("/outcome")
-def outcome(data: OutcomeRequest):
+from connectors.crm import get_lead
 
-    # Objectif donné à l'agent
-    task = {
-        "action": "CREATE_LEAD",
-        "lead_id": data.refund_id
-    }
 
-    # L'agent exécute la tâche
-    agent_result = run_task(task)
+def verify_outcome(lead_id: str):
+    """
+    AgentGuard ne fait pas confiance à l'agent.
+    Il vérifie directement l'état réel du CRM.
+    """
 
-    # AgentGuard vérifie indépendamment
-    verification = verify_outcome(data.refund_id)
+    lead = get_lead(lead_id)
+
+    if lead is None:
+        return {
+            "verified": False,
+            "status": "missing",
+            "reason": "Lead not found in CRM."
+        }
+
+    required_fields = [
+        "name",
+        "email",
+        "status"
+    ]
+
+    missing = []
+
+    for field in required_fields:
+        value = lead.get(field)
+
+        if value is None or value == "":
+            missing.append(field)
+
+    if missing:
+        return {
+            "verified": False,
+            "status": "partial",
+            "reason": "Missing required fields.",
+            "missing_fields": missing,
+            "lead": lead
+        }
+
+    if lead["status"] != "created":
+        return {
+            "verified": False,
+            "status": "invalid",
+            "reason": "Lead has incorrect status.",
+            "lead": lead
+        }
 
     return {
-        "agent": agent_result,
-        "verification": verification
+        "verified": True,
+        "status": "verified",
+        "reason": "Business outcome verified.",
+        "lead": lead
     }
