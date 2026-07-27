@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from agent.runner import run_task
 from engine.outcome import verify_outcome
 
 app = FastAPI(title="AgentGuard")
