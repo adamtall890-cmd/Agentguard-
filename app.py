@@ -30,12 +30,3 @@ class OutcomeRequest(BaseModel):
 @app.post("/outcome")
 def outcome(data: OutcomeRequest):
     return verify_outcome(data.refund_id)
-
-    return {
-        "claim": data.claim,
-        "facts": facts,
-        "evidence": evidence,
-        "crm": crm_data,
-        "web": web_data,
-        **decision
-    }
