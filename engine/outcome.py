@@ -1,48 +1,19 @@
-from connectors.stripe import get_refund
+@app.post("/outcome")
+def outcome(data: OutcomeRequest):
 
+    # Objectif donné à l'agent
+    task = {
+        "action": "CREATE_LEAD",
+        "lead_id": data.refund_id
+    }
 
-def verify_outcome(refund_id: str):
+    # L'agent exécute la tâche
+    agent_result = run_task(task)
 
-    refund = get_refund(refund_id)
-
-    expected = refund["expected_amount"]
-    actual = refund["actual_amount"]
-
-    if refund["status"] == "not_found":
-        return {
-            "refund_id": refund_id,
-            "verdict": "FAKE_COMPLETION",
-            "verified": False,
-            "reason": "Refund does not exist in the source of truth.",
-            "expected": expected,
-            "actual": None
-        }
-
-    if actual == expected:
-        return {
-            "refund_id": refund_id,
-            "verdict": "VERIFIED",
-            "verified": True,
-            "reason": "Business outcome confirmed.",
-            "expected": expected,
-            "actual": actual
-        }
-
-    if 0 < actual < expected:
-        return {
-            "refund_id": refund_id,
-            "verdict": "PARTIAL",
-            "verified": False,
-            "reason": "Business outcome is only partially completed.",
-            "expected": expected,
-            "actual": actual
-        }
+    # AgentGuard vérifie indépendamment
+    verification = verify_outcome(data.refund_id)
 
     return {
-        "refund_id": refund_id,
-        "verdict": "FAKE_COMPLETION",
-        "verified": False,
-        "reason": "Agent reported success but business outcome is missing.",
-        "expected": expected,
-        "actual": actual
+        "agent": agent_result,
+        "verification": verification
     }
