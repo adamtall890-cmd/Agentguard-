@@ -1,7 +1,6 @@
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-
-from fastapi import FastAPI
 from pydantic import BaseModel
 
 from agent.runner import run_task
@@ -11,16 +10,20 @@ app = FastAPI(
     title="AgentGuard",
     version="1.0"
 )
-app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 
-@app.get("/demo")
-def demo():
-    return FileResponse("frontend/index.html")
+# Sert les fichiers HTML/CSS/JS
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
 
 @app.get("/")
-def home():
+def dashboard():
+    return FileResponse("frontend/index.html")
+
+
+@app.get("/api")
+def api():
     return {
-        "message": "AgentGuard is running",
+        "message": "AgentGuard API",
         "version": "1.0"
     }
 
@@ -32,16 +35,13 @@ class OutcomeRequest(BaseModel):
 @app.post("/outcome")
 def outcome(data: OutcomeRequest):
 
-    # Objectif donné à l'agent
     task = {
         "action": "CREATE_LEAD",
         "lead_id": data.refund_id
     }
 
-    # L'agent exécute la tâche
     agent_result = run_task(task)
 
-    # AgentGuard vérifie indépendamment le résultat
     verification = verify_outcome(data.refund_id)
 
     return {
