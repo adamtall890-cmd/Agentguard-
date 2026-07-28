@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,43 +15,129 @@
 <div class="container">
 
     <header>
-        <h1>AgentGuard</h1>
-        <p>Verify outcomes, not claims.</p>
-    </header>
 
-    <section class="card">
+        <div>
 
-        <h2>Workflow</h2>
+            <h1>AgentGuard</h1>
 
-        <label>Scenario</label>
+            <p>
+                Verify outcomes, not claims.
+            </p>
 
-        <select id="scenario">
+        </div>
 
-            <option value="refund_ok">
-                Verified Workflow
-            </option>
-
-            <option value="refund_partial">
-                Partial Completion
-            </option>
-
-            <option value="refund_missing">
-                Fake Completion
-            </option>
-
-        </select>
-
-        <button id="runButton">
-            Run Workflow
+        <button class="admin">
+            ADMIN
         </button>
 
+    </header>
+
+
+    <section class="cards">
+
+        <div class="card">
+
+            <span>Total Checks</span>
+
+            <h2 id="total">
+                0
+            </h2>
+
+        </div>
+
+        <div class="card success">
+
+            <span>Verified</span>
+
+            <h2 id="verified">
+                0
+            </h2>
+
+        </div>
+
+        <div class="card danger">
+
+            <span>Fake Completion</span>
+
+            <h2 id="failed">
+                0
+            </h2>
+
+        </div>
+
     </section>
 
-    <section class="card">
 
-        <h2>Agent Result</h2>
+    <section class="workflow">
 
-        <div id="agentStatus">
+        <h2>
+            CRM Workflow
+        </h2>
+
+        <div class="controls">
+
+            <select id="scenario">
+
+                <option value="lead_ok">
+                    Verified Workflow
+                </option>
+
+                <option value="lead_partial">
+                    Partial Workflow
+                </option>
+
+                <option value="lead_missing">
+                    Fake Completion
+                </option>
+
+            </select>
+
+            <button onclick="runWorkflow()">
+                Run Workflow
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="panel">
+
+        <div>
+
+            <h3>
+                Agent
+            </h3>
+
+            <pre id="agent">
+Waiting...
+            </pre>
+
+        </div>
+
+        <div>
+
+            <h3>
+                AgentGuard Verification
+            </h3>
+
+            <pre id="verification">
+Waiting...
+            </pre>
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2>
+            Final Verdict
+        </h2>
+
+        <div id="status" class="status waiting">
 
             Waiting...
 
@@ -58,15 +145,34 @@
 
     </section>
 
-    <section class="card">
 
-        <h2>AgentGuard Verification</h2>
+    <section>
 
-        <div id="verification">
+        <h2>
+            Recent Verifications
+        </h2>
 
-            Waiting...
+        <table>
 
-        </div>
+            <thead>
+
+            <tr>
+
+                <th>Time</th>
+
+                <th>Lead</th>
+
+                <th>Status</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="history">
+
+            </tbody>
+
+        </table>
 
     </section>
 
@@ -75,4 +181,5 @@
 <script src="script.js"></script>
 
 </body>
+
 </html>
