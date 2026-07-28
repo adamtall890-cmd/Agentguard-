@@ -1,66 +1,83 @@
-const button = document.getElementById("runButton");
+const API = "https://agentguard-production-8f4f.up.railway.app/outcome";
 
-button.addEventListener("click", async () => {
+let total = 0;
+let verified = 0;
+let failed = 0;
+
+async function runWorkflow() {
 
     const scenario = document.getElementById("scenario").value;
 
-    document.getElementById("agentStatus").innerHTML =
-        "⏳ Agent is executing workflow...";
+    const mapping = {
+        "lead_ok": "refund_ok",
+        "lead_partial": "refund_partial",
+        "lead_missing": "refund_missing"
+    };
 
-    document.getElementById("verification").innerHTML =
-        "⏳ AgentGuard is verifying business outcome...";
+    const refund_id = mapping[scenario];
 
-    try {
+    const response = await fetch(API, {
 
-        const response = await fetch("/outcome", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                refund_id: scenario
-            })
-        });
+        method: "POST",
 
-        const data = await response.json();
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-        document.getElementById("agentStatus").innerHTML = `
-            <span class="success">✅ SUCCESS</span><br>
-            Agent reported the workflow completed.
-        `;
+        body: JSON.stringify({
+            refund_id
+        })
 
-        if (data.verified) {
+    });
 
-            document.getElementById("verification").innerHTML = `
-                <span class="success">🟢 VERIFIED</span><br><br>
+    const data = await response.json();
 
-                ✓ Business outcome confirmed<br>
-                ✓ Expected state matches reality<br>
-                ✓ Workflow completed successfully
-            `;
+    document.getElementById("agent").textContent =
+        JSON.stringify(data.agent, null, 2);
 
-        } else {
+    document.getElementById("verification").textContent =
+        JSON.stringify(data.verification, null, 2);
 
-            document.getElementById("verification").innerHTML = `
-                <span class="error">🔴 FAKE COMPLETION</span><br><br>
+    total++;
 
-                Agent reported SUCCESS<br>
-                Reality check failed<br><br>
+    document.getElementById("total").innerText = total;
 
-                <strong>Reason:</strong><br>
-                ${data.reason}
-            `;
+    const status = document.getElementById("status");
 
-        }
+    if (data.verification.verified) {
+
+        verified++;
+
+        document.getElementById("verified").innerText = verified;
+
+        status.className = "status ok";
+
+        status.innerHTML =
+            "✅ VERIFIED";
+
+    } else {
+
+        failed++;
+
+        document.getElementById("failed").innerText = failed;
+
+        status.className = "status fail";
+
+        status.innerHTML =
+            "🚨 FAKE COMPLETION DETECTED";
 
     }
 
-    catch(error){
+    const tbody = document.getElementById("history");
 
-        document.getElementById("verification").innerHTML = `
-            <span class="error">Server unreachable</span>
-        `;
+    const row = document.createElement("tr");
 
-    }
+    row.innerHTML = `
+        <td>${new Date().toLocaleTimeString()}</td>
+        <td>${refund_id}</td>
+        <td>${data.verification.verified ? "Verified" : "Fake Completion"}</td>
+    `;
 
-});
+    tbody.prepend(row);
+
+}
