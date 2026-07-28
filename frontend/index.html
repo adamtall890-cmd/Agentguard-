@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>AgentGuard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>AgentGuard</h1>
+        <p>Verify outcomes, not claims.</p>
+    </header>
+
+    <section class="card">
+
+        <h2>Workflow</h2>
+
+        <label>Scenario</label>
+
+        <select id="scenario">
+
+            <option value="refund_ok">
+                Verified Workflow
+            </option>
+
+            <option value="refund_partial">
+                Partial Completion
+            </option>
+
+            <option value="refund_missing">
+                Fake Completion
+            </option>
+
+        </select>
+
+        <button id="runButton">
+            Run Workflow
+        </button>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Agent Result</h2>
+
+        <div id="agentStatus">
+
+            Waiting...
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>AgentGuard Verification</h2>
+
+        <div id="verification">
+
+            Waiting...
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
