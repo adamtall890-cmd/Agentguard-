@@ -1,3 +1,6 @@
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -8,7 +11,11 @@ app = FastAPI(
     title="AgentGuard",
     version="1.0"
 )
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 
+@app.get("/demo")
+def demo():
+    return FileResponse("frontend/index.html")
 
 @app.get("/")
 def home():
