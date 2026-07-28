@@ -2,109 +2,254 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>AgentGuard</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link
+        rel="stylesheet"
+        href="/static/style.css">
+
 </head>
 
 <body>
 
 <div class="container">
 
-<header>
+    <!-- HEADER -->
 
-<h1>AgentGuard</h1>
+    <header>
 
-<p class="subtitle">
-Verify outcomes, not claims.
-</p>
+        <div>
 
-</header>
+            <h1>AgentGuard</h1>
 
-<section class="workflow">
+            <p class="subtitle">
 
-<h2>CRM Workflow</h2>
+                Verify outcomes, not claims.
 
-<div class="controls">
+            </p>
 
-<select id="scenario">
+        </div>
 
-<option value="verified">Verified Workflow</option>
+        <div class="header-right">
 
-<option value="partial">Partial Completion</option>
+            <span class="badge">
+                Prototype
+            </span>
 
-<option value="fake">Fake Completion</option>
+        </div>
 
-</select>
+    </header>
 
-<button id="run">
-Run Workflow
-</button>
 
-</div>
+    <!-- METRICS -->
 
-</section>
+    <section class="metrics">
 
-<section class="card">
+        <div class="metric-card">
 
-<h2>Agent</h2>
+            <span>
+                Total Checks
+            </span>
 
-<div id="agent">
+            <h2 id="total">
+                0
+            </h2>
+
+        </div>
+
+
+        <div class="metric-card success">
+
+            <span>
+                Verified
+            </span>
+
+            <h2 id="verified">
+                0
+            </h2>
+
+        </div>
+
+
+        <div class="metric-card danger">
+
+            <span>
+                Fake Completion
+            </span>
+
+            <h2 id="failed">
+                0
+            </h2>
+
+        </div>
+
+    </section>
+
+
+    <!-- WORKFLOW -->
+
+    <section class="workflow-card">
+
+        <h2>
+
+            CRM Workflow Simulation
+
+        </h2>
+
+        <p>
+
+            Simulate an AI agent execution and let
+            AgentGuard independently verify
+            the real business outcome.
+
+        </p>
+
+        <div class="controls">
+
+            <select id="scenario">
+
+                <option value="verified">
+
+                    Verified Workflow
+
+                </option>
+
+                <option value="partial">
+
+                    Partial Completion
+
+                </option>
+
+                <option value="fake">
+
+                    Fake Completion
+
+                </option>
+
+            </select>
+
+            <button id="run">
+
+                ▶ Run Workflow
+
+            </button>
+
+        </div>
+
+    </section>    
+    
+    <!-- EXECUTION -->
+
+    <section class="execution-grid">
+
+        <div class="panel">
+
+            <h3>
+
+                🤖 Agent Execution
+
+            </h3>
+
+            <div id="agent" class="console">
+
 Waiting...
-</div>
 
-</section>
+            </div>
 
-<section class="card">
+        </div>
 
-<h2>AgentGuard Verification</h2>
 
-<div id="verification">
+        <div class="panel">
+
+            <h3>
+
+                🛡 AgentGuard Verification
+
+            </h3>
+
+            <div id="verification" class="console">
+
 Waiting...
-</div>
 
-</section>
+            </div>
 
-<section class="card">
+        </div>
 
-<h2>Final Verdict</h2>
+    </section>
 
-<div id="verdict">
-Waiting...
-</div>
 
-</section>
+    <!-- VERDICT -->
 
-<section class="history">
+    <section class="verdict-card">
 
-<h2>Recent Verifications</h2>
+        <h2>
 
-<table>
+            Final Verdict
 
-<thead>
+        </h2>
 
-<tr>
+        <div
+            id="status"
+            class="status waiting">
 
-<th>Time</th>
+            Waiting...
 
-<th>Lead</th>
+        </div>
 
-<th>Status</th>
+    </section>
 
-</tr>
 
-</thead>
+    <!-- HISTORY -->
 
-<tbody id="history">
+    <section class="history-card">
 
-</tbody>
+        <h2>
 
-</table>
+            Recent Verifications
 
-</section>
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Time</th>
+
+                    <th>Workflow</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="history">
+
+            </tbody>
+
+        </table>
+
+    </section>
+        <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+
+            AgentGuard Prototype • Outcome Verification for AI Agents
+
+        </p>
+
+    </footer>
 
 </div>
 
