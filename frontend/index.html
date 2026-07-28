@@ -7,178 +7,108 @@
 
     <title>AgentGuard</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-    <header>
+<header>
 
-        <div>
+<h1>AgentGuard</h1>
 
-            <h1>AgentGuard</h1>
+<p class="subtitle">
+Verify outcomes, not claims.
+</p>
 
-            <p>
-                Verify outcomes, not claims.
-            </p>
+</header>
 
-        </div>
+<section class="workflow">
 
-        <button class="admin">
-            ADMIN
-        </button>
+<h2>CRM Workflow</h2>
 
-    </header>
+<div class="controls">
 
+<select id="scenario">
 
-    <section class="cards">
+<option value="verified">Verified Workflow</option>
 
-        <div class="card">
+<option value="partial">Partial Completion</option>
 
-            <span>Total Checks</span>
+<option value="fake">Fake Completion</option>
 
-            <h2 id="total">
-                0
-            </h2>
+</select>
 
-        </div>
-
-        <div class="card success">
-
-            <span>Verified</span>
-
-            <h2 id="verified">
-                0
-            </h2>
-
-        </div>
-
-        <div class="card danger">
-
-            <span>Fake Completion</span>
-
-            <h2 id="failed">
-                0
-            </h2>
-
-        </div>
-
-    </section>
-
-
-    <section class="workflow">
-
-        <h2>
-            CRM Workflow
-        </h2>
-
-        <div class="controls">
-
-            <select id="scenario">
-
-                <option value="lead_ok">
-                    Verified Workflow
-                </option>
-
-                <option value="lead_partial">
-                    Partial Workflow
-                </option>
-
-                <option value="lead_missing">
-                    Fake Completion
-                </option>
-
-            </select>
-
-            <button onclick="runWorkflow()">
-                Run Workflow
-            </button>
-
-        </div>
-
-    </section>
-
-
-
-    <section class="panel">
-
-        <div>
-
-            <h3>
-                Agent
-            </h3>
-
-            <pre id="agent">
-Waiting...
-            </pre>
-
-        </div>
-
-        <div>
-
-            <h3>
-                AgentGuard Verification
-            </h3>
-
-            <pre id="verification">
-Waiting...
-            </pre>
-
-        </div>
-
-    </section>
-
-
-    <section>
-
-        <h2>
-            Final Verdict
-        </h2>
-
-        <div id="status" class="status waiting">
-
-            Waiting...
-
-        </div>
-
-    </section>
-
-
-    <section>
-
-        <h2>
-            Recent Verifications
-        </h2>
-
-        <table>
-
-            <thead>
-
-            <tr>
-
-                <th>Time</th>
-
-                <th>Lead</th>
-
-                <th>Status</th>
-
-            </tr>
-
-            </thead>
-
-            <tbody id="history">
-
-            </tbody>
-
-        </table>
-
-    </section>
+<button id="run">
+Run Workflow
+</button>
 
 </div>
 
-<script src="script.js"></script>
+</section>
+
+<section class="card">
+
+<h2>Agent</h2>
+
+<div id="agent">
+Waiting...
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>AgentGuard Verification</h2>
+
+<div id="verification">
+Waiting...
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>Final Verdict</h2>
+
+<div id="verdict">
+Waiting...
+</div>
+
+</section>
+
+<section class="history">
+
+<h2>Recent Verifications</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Time</th>
+
+<th>Lead</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="history">
+
+</tbody>
+
+</table>
+
+</section>
+
+</div>
+
+<script src="/static/script.js"></script>
 
 </body>
 
