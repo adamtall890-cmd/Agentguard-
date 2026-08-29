@@ -1,78 +1,55 @@
-:root {
-    --bg-main: #0B0F19;
-    --bg-card: #151B2C;
-    --border-color: #242F4D;
-    --text-primary: #F3F4F6;
-    --text-secondary: #9CA3AF;
-    --color-verified: #10B981;
-    --color-fake: #EF4444;
-}
+document.getElementById('btn-run').addEventListener('click', async () => {
+    const refundId = document.getElementById('refund-id').value;
+    const btn = document.getElementById('btn-run');
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
 
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-}
+    try {
+        const response = await fetch('/outcome', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refund_id: refundId })
+        });
+        const data = await response.json();
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    border-bottom: 1px solid var(--border-color);
-}
+        // 1. Injection de vos objets JSON d'origine tels quels
+        document.getElementById('json-agent').textContent = JSON.stringify(data.agent, null, 2);
+        document.getElementById('json-guard').textContent = JSON.stringify(data.verification, null, 2);
 
-.logo-area { display: flex; align-items: center; gap: 12px; }
-.logo-icon {
-    background: linear-gradient(135deg, #3B82F6, #1D4ED8);
-    color: white; width: 34px; height: 34px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-}
+        // 2. Extraction de la règle de validation d'origine
+        const isVerified = data.verification && (data.verification.verified === true || data.verification === true);
+        
+        // Mise à jour de vos compteurs
+        document.getElementById('total-checks').innerText = parseInt(document.getElementById('total-checks').innerText) + 1;
 
-h1 { font-size: 18px; font-weight: 700; margin: 0; }
-.subtitle { font-size: 12px; color: var(--text-secondary); }
+        const verdictWrapper = document.getElementById('verdict-wrapper');
+        let statusText = "";
 
-.status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-.badge-prototype { background: rgba(16, 185, 129, 0.1); color: var(--color-verified); }
+        if (isVerified) {
+            verdictWrapper.innerHTML = `<div class="alert-box alert-verified">🔒 Verified Completion Detected</div>`;
+            document.getElementById('verified-count').innerText = parseInt(document.getElementById('verified-count').innerText) + 1;
+            statusText = "Verified";
+        } else {
+            verdictWrapper.innerHTML = `<div class="alert-box alert-fake">🚨 FAKE COMPLETION DETECTED</div>`;
+            document.getElementById('fake-count').innerText = parseInt(document.getElementById('fake-count').innerText) + 1;
+            statusText = "Fake Completion";
+        }
 
-main { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+        // 3. Injection de la ligne dans votre tableau historique
+        const now = new Date().toTimeString().split(' ')[0];
+        const historyRows = document.getElementById('history-rows');
+        const newRow = `<tr>
+            <td>${now}</td>
+            <td>${refundId}</td>
+            <td style="color: ${isVerified ? 'var(--color-verified)' : 'var(--color-fake)'}">${statusText}</td>
+        </tr>`;
+        historyRows.innerHTML = newRow + historyRows.innerHTML;
 
-.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px; }
-.metric-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
-.metric-label { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
-.metric-value { font-size: 28px; font-weight: 700; margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
-.text-verified { color: var(--color-verified); }
-.text-fake { color: var(--color-fake); }
-
-.workspace-section { display: flex; flex-direction: column; gap: 20px; }
-.section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 24px; }
-h2 { margin: 0; font-size: 22px; }
-.section-desc { color: var(--text-secondary); font-size: 14px; margin: 6px 0 20px 0; }
-
-.form-group { margin-bottom: 16px; }
-label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
-.input-premium { width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: white; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
-
-.btn-premium { width: 100%; background: #2563EB; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 600; cursor: pointer; }
-
-.results-container { display: flex; flex-direction: column; gap: 16px; }
-.result-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
-h3 { margin: 0 0 12px 0; font-size: 15px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-pre { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin: 0; overflow-x: auto; }
-code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #E5E7EB; white-space: pre-wrap; }
-
-/* Styles de vos alertes réelles */
-.alert-box { border-radius: 12px; padding: 16px; font-weight: 700; text-align: center; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px; }
-.alert-fake { background: rgba(239, 68, 68, 0.15); color: var(--color-fake); border: 1px solid rgba(239, 68, 68, 0.3); }
-.alert-verified { background: rgba(16, 185, 129, 0.15); color: var(--color-verified); border: 1px solid rgba(16, 185, 129, 0.3); }
-
-.table-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
-.premium-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-.premium-table th { color: var(--text-secondary); padding-bottom: 10px; font-weight: 500; border-bottom: 1px solid var(--border-color); }
-.premium-table td { padding: 12px 0; border-bottom: 1px solid rgba(36, 47, 77, 0.5); font-family: 'JetBrains Mono', monospace; }
-
-footer { text-align: center; padding: 40px 0; color: #4B5563; font-size: 12px; }
-
+    } catch (error) {
+        document.getElementById('json-agent').textContent = JSON.stringify({ error: "Node connection failure" }, null, 2);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> Run Workflow';
+    }
+});
