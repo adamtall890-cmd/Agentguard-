@@ -2,17 +2,18 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+import asyncio
 
 from agent.runner import run_task
 from engine.outcome import verify_outcome
-from agent.autonomous_worker import AutonomousWorker  # Branchement de votre nouvel agent asynchrone
+from agent.autonomous_worker import AutonomousWorker
 
 app = FastAPI(
     title="AgentGuard",
     version="1.0"
 )
 
-# Sert les fichiers HTML/CSS/JS
+# Configuration standard du dossier frontend pour distribuer les fichiers
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 
@@ -34,27 +35,29 @@ class OutcomeRequest(BaseModel):
 
 
 @app.post("/outcome")
-async def outcome(data: OutcomeRequest):
+def outcome(data: OutcomeRequest):
     """
-    Cette route intercepte le clic sur le bouton 'Run Workflow' de l'interface.
-    Elle fait travailler le nouvel agent de manière autonome, puis execute la vérification AgentGuard.
+    Route principale corrigée pour exécuter la boucle asynchrone de l'agent 
+    sans bloquer les fonctions synchrones d'origine.
     """
-    # 1. Initialisation de l'agent autonome réel
+    # 1. Initialisation de votre agent autonome
     worker = AutonomousWorker()
-    
-    # 2. L'agent execute sa boucle de réflexion et de traitement CRM de manière asynchrone
-    # On lui passe l'identifiant pour la tâche
     prompt = f"Traiter l'action CRM pour le lead ID {data.refund_id}"
-    agent_claim = await worker.run_workflow(prompt)
+    
+    # 2. On force l'exécution de la fonction asynchrone de l'agent de manière isolée
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    agent_claim = loop.run_until_complete(worker.run_workflow(prompt))
+    loop.close()
 
-    # 3. Récupération de la structure de tâche classique pour assurer la compatibilité
+    # 3. Structure de tâche classique conservée pour vos modules d'origine
     task = {
         "action": "CREATE_LEAD",
         "lead_id": data.refund_id,
         "worker_claim": agent_claim
     }
 
-    # 4. Execution des scripts de simulation et de verdict
+    # 4. Exécution de vos fonctions d'origine (Zéro modification, sécurité maximale)
     agent_result = run_task(task)
     verification = verify_outcome(data.refund_id)
 
