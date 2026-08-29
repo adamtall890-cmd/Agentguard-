@@ -49,4 +49,3 @@ def outcome(data: OutcomeRequest):
         "agent": agent_result,
         "verification": verification
     }
-
