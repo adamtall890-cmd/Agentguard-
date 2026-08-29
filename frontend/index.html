@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,6 @@
             --border-color: #242F4D;
             --text-primary: #F3F4F6;
             --text-secondary: #9CA3AF;
-            --accent-glow: rgba(59, 130, 246, 0.15);
             --color-verified: #10B981;
             --color-fake: #EF4444;
             --color-waiting: #F59E0B;
@@ -38,203 +37,35 @@
             border-bottom: 1px solid var(--border-color);
             background: rgba(11, 15, 25, 0.8);
             backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo-icon {
             background: linear-gradient(135deg, #3B82F6, #1D4ED8);
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            color: white; width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
         }
 
-        h1 {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.5px;
-        }
+        h1 { font-size: 20px; font-weight: 700; margin: 0; }
+        .subtitle { font-size: 13px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
 
-        .subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
-        }
+        main { max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; box-sizing: border-box; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .metric-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; }
+        .metric-label { font-size: 14px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+        .metric-value { font-size: 32px; font-weight: 700; margin-top: 12px; font-family: 'JetBrains Mono', monospace; }
 
-        main {
-            max-width: 1200px;
-            width: 100%;
-            margin: 40px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-            flex-grow: 1;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .metric-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-2px);
-            border-color: #3B82F6;
-        }
-
-        .metric-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .metric-value {
-            font-size: 32px;
-            font-weight: 700;
-            margin-top: 12px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .workspace {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-        }
-
-        .control-panel {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 30px;
-            height: fit-content;
-        }
-
-        .panel-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .input-premium {
-            width: 100%;
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: white;
-            font-size: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-
-        .input-premium:focus {
-            outline: none;
-            border-color: #3B82F6;
-        }
-
-        .btn-premium {
-            width: 100%;
-            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-            transition: opacity 0.2s;
-        }
-
-        .btn-premium:hover {
-            opacity: 0.9;
-        }
-
-        .verification-panel {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .terminal-block {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .block-header {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-secondary);
-            font-size: 12px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-        }
-
-        .status-badge {
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
+        .workspace { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+        .control-panel { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 30px; }
+        .input-premium { width: 100%; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 16px; color: white; font-family: 'JetBrains Mono', monospace; box-sizing: border-box; }
+        .btn-premium { width: 100%; background: linear-gradient(135deg, #3B82F6, #1D4ED8); color: white; border: none; border-radius: 10px; padding: 14px; font-weight: 600; cursor: pointer; }
+        
+        .verification-panel { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+        .terminal-block { background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; }
+        .block-header { display: flex; justify-content: space-between; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; }
+        .status-badge { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        
         .badge-waiting { background: rgba(245, 158, 11, 0.15); color: var(--color-waiting); }
         .badge-verified { background: rgba(16, 185, 129, 0.15); color: var(--color-verified); }
         .badge-fake { background: rgba(239, 68, 68, 0.15); color: var(--color-fake); }
@@ -272,9 +103,9 @@
         <div class="workspace">
             <div class="control-panel">
                 <div class="panel-title"><i class="fa-solid fa-terminal"></i> Trigger Simulation</div>
-                <div class="form-group">
-                    <label for="refund-id">Lead or Object ID</label>
-                    <input type="text" id="refund-id" class="input-premium" value="REFUND-2026-ABJ">
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <label style="display:block; font-size:13px; color:var(--text-secondary); margin-bottom:8px;">Object ID</label>
+                    <input type="text" id="refund-id" class="input-premium" value="REFUND-2026-XYZ">
                 </div>
                 <button class="btn-premium" id="btn-run">
                     <i class="fa-solid fa-play"></i> Run Verification Workflow
@@ -283,13 +114,17 @@
 
             <div class="verification-panel">
                 <div class="panel-title"><i class="fa-solid fa-signature"></i> Audit Pipeline Log</div>
+                
+                <!-- Bloc Agent ( runner.py ) -->
                 <div class="terminal-block">
                     <div class="block-header">
-                        <span>COMPONENT: AUTONOMOUS_WORKER_CLAIM</span>
+                        <span>COMPONENT: AGENT_EXECUTION</span>
                         <span class="status-badge badge-waiting" id="badge-agent">Waiting</span>
                     </div>
-                    <div id="log-agent" style="color: var(--text-secondary);">No active transaction pipeline. Waiting for workflow execution.</div>
+                    <div id="log-agent" style="color: var(--text-secondary);">No active transaction pipeline. Awaiting workflow execution.</div>
                 </div>
+
+                <!-- Bloc AgentGuard Verdict ( outcome.py ) -->
                 <div class="terminal-block">
                     <div class="block-header">
                         <span>COMPONENT: AGENTGUARD_VERDICT</span>
@@ -302,3 +137,42 @@
     </main>
 
     <script>
+        document.getElementById('btn-run').addEventListener('click', async () => {
+            const refundId = document.getElementById('refund-id').value;
+            const btn = document.getElementById('btn-run');
+            const logAgent = document.getElementById('log-agent');
+            const logGuard = document.getElementById('log-guard');
+            const badgeAgent = document.getElementById('badge-agent');
+            const badgeGuard = document.getElementById('badge-guard');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing verification...';
+
+            try {
+                const response = await fetch('/outcome', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ refund_id: refundId })
+                });
+                const data = await response.json();
+
+                // Connexion directe avec vos composants d'origine du backend
+                badgeAgent.className = "status-badge badge-verified";
+                badgeAgent.innerText = "Executed";
+                logAgent.style.color = '#3B82F6';
+                logAgent.innerHTML = `[AGENT LOGS]\nAction: ${data.task.action}\nResult: ${data.agent}`;
+
+                // Analyse directe de la réponse de votre outcome.py d'origine
+                const isVerified = data.verification;
+                document.getElementById('count-total').innerText = parseInt(document.getElementById('count-total').innerText) + 1;
+
+                if (isVerified === true || isVerified === "true" || isVerified?.verified === true) {
+                    badgeGuard.className = "status-badge badge-verified";
+                    badgeGuard.innerText = "Verified";
+                    logGuard.style.color = '#10B981';
+                    logGuard.innerHTML = `[SUCCESS] Cryptographic proof validated by verification engine.\nNo anomalies or spoofing traces detected.`;
+                    document.getElementById('count-verified').innerText = parseInt(document.getElementById('count-verified').innerText) + 1;
+                } else {
+                    badgeGuard.className = "status-badge badge-fake";
+                    badgeGuard.innerText = "Spoof Detected";
+                    logGuard.style.color = '#EF4444';
