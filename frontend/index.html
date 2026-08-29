@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentGuard — Cryptographic Outcome Verification</title>
+    <title>AgentGuard — Verify outcomes, not claims.</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="https://cloudflare.com">
-    <!-- Appel de votre feuille de style -->
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -16,63 +15,84 @@
             <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div>
                 <h1>AgentGuard</h1>
-                <div class="subtitle">Zero-Trust Agent Auditing Protocol</div>
+                <div class="subtitle">Verify outcomes, not claims.</div>
             </div>
         </div>
-        <div class="status-badge badge-verified"><i class="fa-solid fa-circle-check"></i> Node Live</div>
+        <div class="status-badge badge-prototype"><i class="fa-solid fa-circle"></i> Prototype</div>
     </header>
 
     <main>
+        <!-- Grille des compteurs d'origine -->
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-label"><i class="fa-solid fa-bolt" style="color: #3B82F6;"></i> Total Audits</div>
-                <div class="metric-value" id="count-total">0</div>
+                <div class="metric-label">Total Checks</div>
+                <div class="metric-value" id="total-checks">0</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label"><i class="fa-solid fa-check-double" style="color: var(--color-verified);"></i> Cryptographically Verified</div>
-                <div class="metric-value" id="count-verified" style="color: var(--color-verified);">0</div>
+                <div class="metric-label">Verified</div>
+                <div class="metric-value text-verified" id="verified-count">0</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label"><i class="fa-solid fa-triangle-exclamation" style="color: var(--color-fake);"></i> Spoofing Detected</div>
-                <div class="metric-value" id="count-fake" style="color: var(--color-fake);">0</div>
+                <div class="metric-label">Fake</div>
+                <div class="metric-value text-fake" id="fake-count">0</div>
             </div>
         </div>
 
-        <div class="workspace">
-            <div class="control-panel">
-                <div class="panel-title"><i class="fa-solid fa-terminal"></i> Trigger Simulation</div>
-                <div class="form-group" style="margin-bottom: 24px;">
-                    <label style="display:block; font-size:13px; color:var(--text-secondary); margin-bottom:8px;">Object ID</label>
-                    <input type="text" id="refund-id" class="input-premium" value="REFUND-2026-XYZ">
+        <!-- Section de simulation CRM -->
+        <div class="workspace-section">
+            <div class="section-card">
+                <h2>CRM Workflow</h2>
+                <p class="section-desc">Simulate an AI Agent completing business workflows.</p>
+                
+                <div class="form-group">
+                    <label for="refund-id">Object ID</label>
+                    <input type="text" id="refund-id" class="input-premium" value="refund_partial">
                 </div>
+                
                 <button class="btn-premium" id="btn-run">
-                    <i class="fa-solid fa-play"></i> Run Verification Workflow
+                    <i class="fa-solid fa-play"></i> Run Workflow
                 </button>
             </div>
 
-            <div class="verification-panel">
-                <div class="panel-title"><i class="fa-solid fa-signature"></i> Audit Pipeline Log</div>
-                
-                <div class="terminal-block">
-                    <div class="block-header">
-                        <span>COMPONENT: AGENT_EXECUTION</span>
-                        <span class="status-badge badge-waiting" id="badge-agent">Waiting</span>
-                    </div>
-                    <div id="log-agent" style="color: var(--text-secondary);">No active transaction pipeline. Awaiting workflow execution.</div>
+            <!-- Blocs de résultats JSON réels -->
+            <div class="results-container">
+                <div class="result-box">
+                    <h3><i class="fa-solid fa-robot"></i> Agent Execution</h3>
+                    <pre><code id="json-agent">{\n  "status": "Awaiting execution..."\n}</code></pre>
                 </div>
 
-                <div class="terminal-block">
-                    <div class="block-header">
-                        <span>COMPONENT: AGENTGUARD_VERDICT</span>
-                        <span class="status-badge badge-waiting" id="badge-guard">Waiting</span>
-                    </div>
-                    <div id="log-guard" style="color: var(--text-secondary);">Awaiting cryptographic proof of completion...</div>
+                <div class="result-box">
+                    <h3><i class="fa-solid fa-shield-halved"></i> AgentGuard Verification</h3>
+                    <pre><code id="json-guard">{\n  "status": "Awaiting validation..."\n}</code></pre>
+                </div>
+
+                <!-- Zone d'alerte dynamique d'origine -->
+                <div id="verdict-wrapper"></div>
+
+                <!-- Tableau Historique d'origine -->
+                <div class="table-box">
+                    <h3>Recent Verifications</h3>
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Workflow</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-rows">
+                            <!-- Les lignes s'injectent ici comme avant -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Appel de votre script logique -->
+    <footer>
+        AgentGuard Prototype • Outcome Verification for AI Agents
+    </footer>
+
     <script src="/static/script.js"></script>
 </body>
 </html>
