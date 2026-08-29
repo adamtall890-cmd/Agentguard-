@@ -3,49 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgentGuard</title>
+    <title>AgentGuard — Verify outcomes, not claims.</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cloudflare.com">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+
     <header>
-        <h1>AgentGuard</h1>
-        <p>Verify outcomes, not claims.</p>
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div>
+                <h1>AgentGuard</h1>
+                <div class="subtitle">Verify outcomes, not claims.</div>
+            </div>
+        </div>
+        <div class="status-badge badge-prototype"><i class="fa-solid fa-circle"></i> Prototype</div>
     </header>
 
     <main>
-        <!-- Restauration exacte de vos compteurs d'origine -->
-        <div class="stats">
-            <div>Total Checks: <span id="total-checks">0</span></div>
-            <div>Verified: <span id="verified-count">0</span></div>
-            <div>Fake: <span id="fake-count">0</span></div>
+        <!-- Grille des compteurs d'origine -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Total Checks</div>
+                <div class="metric-value" id="total-checks">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Verified</div>
+                <div class="metric-value text-verified" id="verified-count">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Fake</div>
+                <div class="metric-value text-fake" id="fake-count">0</div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>CRM Workflow</h2>
-            <p>Simulate an AI Agent completing business workflows.</p>
-            
-            <select id="refund-id">
-                <option value="refund_verified">Verified Workflow</option>
-                <option value="refund_partial">Partial Completion</option>
-                <option value="refund_fake">Fake Completion</option>
-            </select>
-            <br><br>
-            <button id="btn-run">Run Workflow</button>
-        </div>
+        <!-- Section de simulation CRM -->
+        <div class="workspace-section">
+            <div class="section-card">
+                <h2>CRM Workflow</h2>
+                <p class="section-desc">Simulate an AI Agent completing business workflows.</p>
+                
+                <div class="form-group">
+                    <label for="refund-id">Object ID</label>
+                    <input type="text" id="refund-id" class="input-premium" value="refund_partial">
+                </div>
+                
+                <button class="btn-premium" id="btn-run">
+                    <i class="fa-solid fa-play"></i> Run Workflow
+                </button>
+            </div>
 
-        <!-- Zone d'affichage de vos alertes et JSON -->
-        <div id="verdict"></div>
+            <!-- Blocs de résultats JSON réels -->
+            <div class="results-container">
+                <div class="result-box">
+                    <h3><i class="fa-solid fa-robot"></i> Agent Execution</h3>
+                    <pre><code id="json-agent">{\n  "status": "Awaiting execution..."\n}</code></pre>
+                </div>
 
-        <div class="result">
-            <h3>Agent Execution</h3>
-            <pre><code id="json-agent">Waiting...</code></pre>
-        </div>
+                <div class="result-box">
+                    <h3><i class="fa-solid fa-shield-halved"></i> AgentGuard Verification</h3>
+                    <pre><code id="json-guard">{\n  "status": "Awaiting validation..."\n}</code></pre>
+                </div>
 
-        <div class="result">
-            <h3>AgentGuard Verification</h3>
-            <pre><code id="json-guard">Waiting...</code></pre>
+                <!-- Zone d'alerte dynamique d'origine -->
+                <div id="verdict-wrapper"></div>
+
+                <!-- Tableau Historique d'origine -->
+                <div class="table-box">
+                    <h3>Recent Verifications</h3>
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Workflow</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-rows">
+                            <!-- Les lignes s'injectent ici comme avant -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
+
+    <footer>
+        AgentGuard Prototype • Outcome Verification for AI Agents
+    </footer>
 
     <script src="/static/script.js"></script>
 </body>
