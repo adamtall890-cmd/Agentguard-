@@ -22,7 +22,6 @@
     </header>
 
     <main>
-        <!-- Grille des compteurs d'origine -->
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">Total Checks</div>
@@ -38,15 +37,18 @@
             </div>
         </div>
 
-        <!-- Section de simulation CRM -->
         <div class="workspace-section">
             <div class="section-card">
                 <h2>CRM Workflow</h2>
                 <p class="section-desc">Simulate an AI Agent completing business workflows.</p>
                 
+                <!-- Restauration de vos 3 options d'origine -->
                 <div class="form-group">
-                    <label for="refund-id">Object ID</label>
-                    <input type="text" id="refund-id" class="input-premium" value="refund_partial">
+                    <select id="refund-id" class="input-premium">
+                        <option value="refund_verified">Verified Workflow</option>
+                        <option value="refund_partial">Partial Completion</option>
+                        <option value="refund_fake">Fake Completion</option>
+                    </select>
                 </div>
                 
                 <button class="btn-premium" id="btn-run">
@@ -54,44 +56,19 @@
                 </button>
             </div>
 
-            <!-- Blocs de résultats JSON réels -->
             <div class="results-container">
                 <div class="result-box">
                     <h3><i class="fa-solid fa-robot"></i> Agent Execution</h3>
-                    <pre><code id="json-agent">{\n  "status": "Awaiting execution..."\n}</code></pre>
+                    <pre><code id="json-agent">{\n  "status": "Waiting..."\n}</code></pre>
                 </div>
 
                 <div class="result-box">
                     <h3><i class="fa-solid fa-shield-halved"></i> AgentGuard Verification</h3>
-                    <pre><code id="json-guard">{\n  "status": "Awaiting validation..."\n}</code></pre>
-                </div>
-
-                <!-- Zone d'alerte dynamique d'origine -->
-                <div id="verdict-wrapper"></div>
-
-                <!-- Tableau Historique d'origine -->
-                <div class="table-box">
-                    <h3>Recent Verifications</h3>
-                    <table class="premium-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Workflow</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-rows">
-                            <!-- Les lignes s'injectent ici comme avant -->
-                        </tbody>
-                    </table>
+                    <pre><code id="json-guard">{\n  "status": "Waiting..."\n}</code></pre>
                 </div>
             </div>
         </div>
     </main>
-
-    <footer>
-        AgentGuard Prototype • Outcome Verification for AI Agents
-    </footer>
 
     <script src="/static/script.js"></script>
 </body>
