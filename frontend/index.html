@@ -3,96 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AgentGuard — Verify outcomes, not claims.</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <link rel="stylesheet" href="https://cloudflare.com">
+
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-    <header>
-        <div class="logo-area">
-            <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <div>
-                <h1>AgentGuard</h1>
-                <div class="subtitle">Verify outcomes, not claims.</div>
+<header>
+    <div class="logo-area">
+        <div class="logo-icon">▣</div>
+
+        <div>
+            <h1>AgentGuard</h1>
+            <div class="subtitle">
+                Verify outcomes, not claims.
             </div>
         </div>
-        <div class="status-badge badge-prototype"><i class="fa-solid fa-circle"></i> Prototype</div>
-    </header>
+    </div>
 
-    <main>
-        <!-- Grille des compteurs d'origine -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-label">Total Checks</div>
-                <div class="metric-value" id="total-checks">0</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Verified</div>
-                <div class="metric-value text-verified" id="verified-count">0</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Fake</div>
-                <div class="metric-value text-fake" id="fake-count">0</div>
-            </div>
-        </div>
+    <div class="status-badge badge-prototype">
+        <span class="status-dot"></span>
+        Prototype
+    </div>
+</header>
 
-        <!-- Section de simulation CRM -->
-        <div class="workspace-section">
-            <div class="section-card">
-                <h2>CRM Workflow</h2>
-                <p class="section-desc">Simulate an AI Agent completing business workflows.</p>
-                
-                <div class="form-group">
-                    <label for="refund-id">Object ID</label>
-                    <input type="text" id="refund-id" class="input-premium" value="refund_partial">
-                </div>
-                
-                <button class="btn-premium" id="btn-run">
-                    <i class="fa-solid fa-play"></i> Run Workflow
-                </button>
+
+<main>
+
+    <!-- =========================
+         METRICS
+    ========================== -->
+
+    <div class="metrics-grid">
+
+        <div class="metric-card">
+            <div class="metric-label">
+                Total Checks
             </div>
 
-            <!-- Blocs de résultats JSON réels -->
-            <div class="results-container">
-                <div class="result-box">
-                    <h3><i class="fa-solid fa-robot"></i> Agent Execution</h3>
-                    <pre><code id="json-agent">{\n  "status": "Awaiting execution..."\n}</code></pre>
-                </div>
-
-                <div class="result-box">
-                    <h3><i class="fa-solid fa-shield-halved"></i> AgentGuard Verification</h3>
-                    <pre><code id="json-guard">{\n  "status": "Awaiting validation..."\n}</code></pre>
-                </div>
-
-                <!-- Zone d'alerte dynamique d'origine -->
-                <div id="verdict-wrapper"></div>
-
-                <!-- Tableau Historique d'origine -->
-                <div class="table-box">
-                    <h3>Recent Verifications</h3>
-                    <table class="premium-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Workflow</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-rows">
-                            <!-- Les lignes s'injectent ici comme avant -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="metric-value" id="total-checks">
+                0
             </div>
         </div>
-    </main>
 
-    <footer>
-        AgentGuard Prototype • Outcome Verification for AI Agents
-    </footer>
 
-    <script src="/static/script.js"></script>
+        <div class="metric-card">
+
+            <div class="metric-label">
+                Verified
+            </div>
+
+            <div
+                class="metric-value text-verified"
+                id="verified-count"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-label">
+                Fake
+            </div>
+
+            <div
+                class="metric-value text-fake"
+                id="fake-count"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         CRM WORKFLOW
+    ========================== -->
+
+    <div class="workspace-section">
+
+        <div class="section-card">
+
+            <h2>CRM Workflow</h2>
+
+            <p class="section-desc">
+                Simulate an AI Agent completing business workflows.
+            </p>
+
+
+            <div class="form-group">
+
+                <label for="refund-id">
+                    Workflow
+                </label>
+
+                <!-- IMPORTANT :
+                     C'est ici que les 3 anciennes options reviennent.
+                -->
+
+                <select
+                    id="refund-id"
+                    class="input-premium workflow-select"
+                >
+
+                    <option value="verified_workflow">
+                        ✓ Verified Workflow
+                    </option>
+
+                    <option value="partial_completion">
+                        Partial Completion
+                    </option>
+
+                    <option value="fake_completion">
+                        Fake Completion
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="btn-premium"
+                id="btn-run"
+                type="button"
+            >
+                ▶ Run Workflow
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             RESULTS
+        ========================== -->
+
+        <div class="results-container">
+
+
+            <!-- AGENT EXECUTION -->
+
+            <div class="result-box">
+
+                <h3>
+                    🤖 Agent Execution
+                </h3>
+
+                <pre><code id="json-agent">{
+  "status": "Awaiting execution..."
+}</code></pre>
+
+            </div>
+
+
+            <!-- AGENTGUARD VERIFICATION -->
+
+            <div class="result-box">
+
+                <h3>
+                    🛡 AgentGuard Verification
+                </h3>
+
+                <pre><code id="json-guard">{
+  "status": "Awaiting validation..."
+}</code></pre>
+
+            </div>
+
+
+            <!-- FINAL VERDICT -->
+
+            <div id="verdict-wrapper"></div>
+
+
+            <!-- =========================
+                 HISTORY
+            ========================== -->
+
+            <div class="table-box">
+
+                <h3>
+                    Recent Verifications
+                </h3>
+
+                <table class="premium-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Time</th>
+                            <th>Workflow</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="history-rows">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+    AgentGuard Prototype • Outcome Verification for AI Agents
+</footer>
+
+
+<script src="/static/script.js"></script>
+
 </body>
 </html>
