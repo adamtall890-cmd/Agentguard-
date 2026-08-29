@@ -1,61 +1,78 @@
-document.getElementById('btn-run').addEventListener('click', async () => {
-    const refundId = document.getElementById('refund-id').value;
-    const btn = document.getElementById('btn-run');
-    const logAgent = document.getElementById('log-agent');
-    const logGuard = document.getElementById('log-guard');
-    const badgeAgent = document.getElementById('badge-agent');
-    const badgeGuard = document.getElementById('badge-guard');
+:root {
+    --bg-main: #0B0F19;
+    --bg-card: #151B2C;
+    --border-color: #242F4D;
+    --text-primary: #F3F4F6;
+    --text-secondary: #9CA3AF;
+    --color-verified: #10B981;
+    --color-fake: #EF4444;
+}
 
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Testing Pipeline...';
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
 
-    try {
-        const response = await fetch('/outcome', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refund_id: refundId })
-        });
-        const data = await response.json();
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border-color);
+}
 
-        // 1. Affiche l'exécution réelle issue de vos dossiers backend
-        badgeAgent.className = "status-badge badge-verified";
-        badgeAgent.innerText = "Executed";
-        logAgent.style.color = '#3B82F6';
-        logAgent.innerHTML = `[AGENT EXECUTION LOGS]\nAction: ${data.task.action}\nResult Output: ${JSON.stringify(data.agent)}`;
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+    background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+    color: white; width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+}
 
-        // 2. Traitement de la vérification de votre outil engine/outcome.py
-        const verificationResult = data.verification;
-        
-        // Gestion de vos structures d'alerte d'origine (booléen ou objet)
-        let isVerified = false;
-        if (verificationResult === true || verificationResult === "true") {
-            isVerified = true;
-        } else if (verificationResult && typeof verificationResult === 'object' && verificationResult.verified === true) {
-            isVerified = true;
-        }
+h1 { font-size: 18px; font-weight: 700; margin: 0; }
+.subtitle { font-size: 12px; color: var(--text-secondary); }
 
-        // Incrémentation du compteur global
-        document.getElementById('count-total').innerText = parseInt(document.getElementById('count-total').innerText) + 1;
+.status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.badge-prototype { background: rgba(16, 185, 129, 0.1); color: var(--color-verified); }
 
-        if (isVerified) {
-            badgeGuard.className = "status-badge badge-verified";
-            badgeGuard.innerText = "Verified";
-            logGuard.style.color = '#10B981';
-            logGuard.innerHTML = `[VERDICT: SECURE]\nOutcome matching verification metrics.\nNo manipulation detected in target ledger.`;
-            document.getElementById('count-verified').innerText = parseInt(document.getElementById('count-verified').innerText) + 1;
-        } else {
-            badgeGuard.className = "status-badge badge-fake";
-            badgeGuard.innerText = "Spoof Detected";
-            logGuard.style.color = '#EF4444';
-            logGuard.innerHTML = `[CRITICAL ALERT: FRAUD DETECTED]\nState validation failed.\nAgent state logs mismatch with system event logs.`;
-            document.getElementById('count-fake').innerText = parseInt(document.getElementById('count-fake').innerText) + 1;
-        }
+main { max-width: 800px; margin: 30px auto; padding: 0 20px; }
 
-    } catch (error) {
-        logAgent.innerHTML = '❌ Connection node error.';
-        logGuard.innerHTML = error.message;
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-play"></i> Run Verification Workflow';
-    }
-});
+.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px; }
+.metric-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
+.metric-label { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+.metric-value { font-size: 28px; font-weight: 700; margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+.text-verified { color: var(--color-verified); }
+.text-fake { color: var(--color-fake); }
+
+.workspace-section { display: flex; flex-direction: column; gap: 20px; }
+.section-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 24px; }
+h2 { margin: 0; font-size: 22px; }
+.section-desc { color: var(--text-secondary); font-size: 14px; margin: 6px 0 20px 0; }
+
+.form-group { margin-bottom: 16px; }
+label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+.input-premium { width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: white; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
+
+.btn-premium { width: 100%; background: #2563EB; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 600; cursor: pointer; }
+
+.results-container { display: flex; flex-direction: column; gap: 16px; }
+.result-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
+h3 { margin: 0 0 12px 0; font-size: 15px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+pre { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin: 0; overflow-x: auto; }
+code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #E5E7EB; white-space: pre-wrap; }
+
+/* Styles de vos alertes réelles */
+.alert-box { border-radius: 12px; padding: 16px; font-weight: 700; text-align: center; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px; }
+.alert-fake { background: rgba(239, 68, 68, 0.15); color: var(--color-fake); border: 1px solid rgba(239, 68, 68, 0.3); }
+.alert-verified { background: rgba(16, 185, 129, 0.15); color: var(--color-verified); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+.table-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
+.premium-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+.premium-table th { color: var(--text-secondary); padding-bottom: 10px; font-weight: 500; border-bottom: 1px solid var(--border-color); }
+.premium-table td { padding: 12px 0; border-bottom: 1px solid rgba(36, 47, 77, 0.5); font-family: 'JetBrains Mono', monospace; }
+
+footer { text-align: center; padding: 40px 0; color: #4B5563; font-size: 12px; }
+
